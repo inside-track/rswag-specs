@@ -11,8 +11,8 @@ module Rswag
     ::RSpec.configure do |c|
       c.add_setting :swagger_root
       c.add_setting :swagger_docs
-      c.extend ExampleGroupHelpers, type: :request
-      c.include ExampleHelpers, type: :request
+      c.extend ExampleGroupHelpers #, type: :request
+      c.include ExampleHelpers #, type: :request
     end
 
     def self.config
@@ -20,7 +20,7 @@ module Rswag
     end
 
     # Support Rails 3+ and RSpec 2+ (sigh!)
-    #RAILS_VERSION = Rails::VERSION::MAJOR
+    RAILS_VERSION = 4
     RSPEC_VERSION = RSpec::Core::Version::STRING.split('.').first.to_i
   end
 end
