@@ -20,7 +20,7 @@ module Rswag
     end
 
     # Support Rails 3+ and RSpec 2+ (sigh!)
-    RAILS_VERSION = Rails::VERSION::MAJOR
+    #RAILS_VERSION = Rails::VERSION::MAJOR
     RSPEC_VERSION = RSpec::Core::Version::STRING.split('.').first.to_i
   end
 end
