@@ -11,8 +11,8 @@ module Rswag
     ::RSpec.configure do |c|
       c.add_setting :swagger_root
       c.add_setting :swagger_docs
-      c.extend ExampleGroupHelpers #, type: :request
-      c.include ExampleHelpers #, type: :request
+      c.extend ExampleGroupHelpers, type: :request
+      c.include ExampleHelpers, type: :request
     end
 
     def self.config

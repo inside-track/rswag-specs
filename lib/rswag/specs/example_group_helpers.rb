@@ -89,6 +89,73 @@ module Rswag
           end
         end
       end
+
+      def run_request
+
+        before do |example|
+          code = example.metadata[:response][:code]
+          status = code.to_s.start_with?('2') ? 'success' : 'failure'
+          data = self.respond_to?(:data) ? self.data : []
+          message = self.respond_to?(:message) ? self.message : ''
+          example.metadata[:response][:schema] = Rswag::Specs::SwaggerSchemaLoader.convert(code, status, data, message)
+          submit_request(example.metadata)
+        end
+
+      end
     end
+
+    module SwaggerSchemaLoader
+
+      def self.convert(code, status, data, message)
+        {type: :object,
+         properties: {
+             code: {type: :integer},
+             status: {type: :string},
+             data: {
+                 type: :array,
+                 items: format_items(data)
+             },
+             message: {type: :string}
+         },
+         example: {
+             code: code,
+             status: status,
+             data: data,
+             message: message,
+         },
+         required: %w(code, status, data, message)}
+      end
+
+      private
+
+      def self.format_items(data)
+        data.map do |item|
+          {
+              type: :object,
+              properties: self.format_properties(item),
+              example: item
+          }
+        end
+      end
+
+      def self.format_properties(item)
+        props = {}
+        item.each do |k, v|
+          props[k.to_sym] = {type: self.format_types(v)}
+        end
+        props
+      end
+
+      def self.format_types(data)
+        case data
+          when Fixnum
+            :integer
+          else
+            :string
+        end
+      end
+
+    end
+
   end
 end
